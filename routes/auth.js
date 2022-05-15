@@ -17,18 +17,20 @@ router.post("/login", async function (req, res) {
     return;
   }
   const userInfo = await getUserInfo(userId);
-  console.log(password, userInfo);
+  console.log(userInfo, password);
   // 判断密码是否匹配
   if (password !== userInfo.password) {
     res.send(Message(-1, "账号与密码不匹配"));
     return;
   }
+  delete userInfo.password;
   // 如果都匹配， 生成token
   const token = createToken(account);
 
   res.send(
     Message(0, "账号密码正确", {
       token,
+      userInfo,
     })
   );
 });
@@ -49,11 +51,15 @@ router.post("/signUp", async function (req, res) {
     password,
   };
   userId = await insertOneUser(document);
-  const userInfo = await getUserInfo(userId);
-  console.log(userInfo);
+  const userInfo = await getUserInfo(userId, 1);
+
+  // 带上token
+  const token = createToken(account);
+
   res.send(
     Message(0, "创建成功", {
       userInfo,
+      token,
     })
   );
 });

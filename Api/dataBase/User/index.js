@@ -12,10 +12,14 @@ const collectionName = "user";
 
 /**
  * 获取用户信息, 返回用户信息的Promise
+ * @param {number} flag 默认0不移除密码， 1为移除密码
  */
-async function getUserInfo(userId) {
+async function getUserInfo(userId, flag = 0) {
   try {
-    const userInfo = await findDocInCollectionById(collectionName, userId);
+    let userInfo = await findDocInCollectionById(collectionName, userId);
+    if (flag === 1) {
+      delete userInfo.password;
+    }
     return userInfo;
   } catch (e) {
     return Promise.reject(e);
