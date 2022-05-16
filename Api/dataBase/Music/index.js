@@ -13,8 +13,8 @@ const collectionName = "music";
  */
 async function getMusicById(musicId) {
   try {
-    const userInfo = await findDocInCollectionById(collectionName, musicId);
-    return userInfo;
+    const musicInfo = await findDocInCollectionById(collectionName, musicId);
+    return musicInfo;
   } catch (e) {
     return Promise.reject(e);
   }

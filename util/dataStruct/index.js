@@ -9,7 +9,7 @@ function Message(code, msg, append) {
   return {
     code,
     msg,
-    ...append,
+    data: append,
   };
 }
 module.exports = {
