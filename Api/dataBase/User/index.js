@@ -1,6 +1,5 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const { connectUri, dataBaseName } = require("../config");
-const client = new MongoClient(connectUri);
 const {
   findDocInCollectionById,
   UpdateDocInCollectionById,
@@ -122,6 +121,7 @@ async function getUserLikeMusicList(userId) {
  * 获取根据用户账号获取用户ID, 没有则返回null
  */
 async function getUserIdByAccount(account) {
+  const client = new MongoClient(connectUri);
   return new Promise(async (resolve, reject) => {
     try {
       await client.connect();

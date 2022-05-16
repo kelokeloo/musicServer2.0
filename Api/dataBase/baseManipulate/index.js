@@ -1,6 +1,5 @@
 const { MongoClient, ObjectId } = require("mongodb");
 const { connectUri, dataBaseName } = require("../config");
-const client = new MongoClient(connectUri);
 
 /**
  * @description 根据_id查找集合中的文档
@@ -9,6 +8,7 @@ const client = new MongoClient(connectUri);
  * @returns {Promise<doc>} doc
  */
 function findDocInCollectionById(collectionName, _id) {
+  const client = new MongoClient(connectUri);
   return new Promise(async (resolve, reject) => {
     try {
       await client.connect();
@@ -37,6 +37,7 @@ function findDocInCollectionById(collectionName, _id) {
  * @returns {Promise<string>} insertedId
  */
 function insertDocToCollection(collectionName, document) {
+  const client = new MongoClient(connectUri);
   return new Promise(async (resolve, reject) => {
     try {
       await client.connect();
@@ -60,6 +61,7 @@ function insertDocToCollection(collectionName, document) {
  * @returns {Promise<string>} upsertedId
  */
 function UpdateDocInCollectionById(collectionName, _id, newDoc) {
+  const client = new MongoClient(connectUri);
   return new Promise(async (resolve, reject) => {
     try {
       await client.connect();
@@ -87,6 +89,7 @@ function UpdateDocInCollectionById(collectionName, _id, newDoc) {
  * @param {string} collectionName
  */
 function findAllDocInCollection(collectionName) {
+  const client = new MongoClient(connectUri);
   return new Promise(async (resolve, reject) => {
     try {
       await client.connect();
@@ -110,9 +113,38 @@ function findAllDocInCollection(collectionName) {
   });
 }
 
+/**
+ * @description 根据filter查询集合文档
+ */
+
+function findDocsInCollection(collectionName, filter) {
+  const client = new MongoClient(connectUri);
+  return new Promise(async (resolve, reject) => {
+    try {
+      await client.connect();
+      const collection = client.db(dataBaseName).collection(collectionName);
+
+      let docs = await collection.find(filter).toArray();
+      if (docs.length > 0) {
+        docs = docs.map((doc) => {
+          const _id = doc._id.toHexString();
+          doc._id = _id;
+          return doc;
+        });
+      }
+      resolve(docs);
+    } catch (e) {
+      reject(e);
+    } finally {
+      await client.close();
+    }
+  });
+}
+
 module.exports = {
   findDocInCollectionById,
   insertDocToCollection,
   UpdateDocInCollectionById,
   findAllDocInCollection,
+  findDocsInCollection,
 };
