@@ -95,7 +95,7 @@ function findAllDocInCollection(collectionName) {
       const collection = client.db(dataBaseName).collection(collectionName);
 
       const cursor = await collection.find({});
-      const docs = await cursor.toArray();
+      let docs = await cursor.toArray();
       if (docs.length > 0) {
         docs = docs.map((doc) => {
           const _id = doc._id.toHexString();
