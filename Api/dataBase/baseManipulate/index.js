@@ -74,8 +74,7 @@ function UpdateDocInCollectionById(collectionName, _id, newDoc) {
         $set: newDoc,
       };
       const result = await collection.updateOne(filter, updateDoc);
-      const upsertedId = result.upsertedId.toHexString();
-      resolve(upsertedId);
+      resolve(result);
     } catch (e) {
       reject(e);
     } finally {

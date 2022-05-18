@@ -53,8 +53,43 @@ async function insertMusicToCollection(doc) {
   }
 }
 
+/**
+ * 更新音乐，返回更新音乐的Id
+ */
+async function updateMusicInfo(musicId, document) {
+  try {
+    const result = await UpdateDocInCollectionById(
+      collectionName,
+      musicId,
+      document
+    );
+    return result;
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
+
+/**
+ * 添加音乐的播放次数
+ */
+async function addMusicCount(musicId) {
+  try {
+    const musicInfo = await getMusicById(musicId);
+    const count =
+      musicInfo.count && musicInfo.count !== 0 ? musicInfo.count : 0;
+    musicInfo.count = count + 1;
+    delete musicInfo._id;
+    const res = await updateMusicInfo(musicId, musicInfo);
+    return true;
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 module.exports = {
   getMusicById,
   getAllMusics,
   insertMusicToCollection,
+  addMusicCount,
 };

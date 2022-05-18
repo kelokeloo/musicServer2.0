@@ -30,12 +30,12 @@ async function getUserInfo(userId, flag = 0) {
  */
 async function updateUserInfo(userId, document) {
   try {
-    const upsertedId = await UpdateDocInCollectionById(
+    const result = await UpdateDocInCollectionById(
       collectionName,
       userId,
       document
     );
-    return upsertedId;
+    return userId;
   } catch (e) {
     return Promise.reject(e);
   }
@@ -78,6 +78,7 @@ async function addMusicToUserLikeList(userId, musicId) {
       likeMusics.push(musicId);
     }
     userInfo.likeMusics = likeMusics;
+    delete userInfo._id;
     await updateUserInfo(userId, userInfo);
     return true;
   } catch (e) {
@@ -98,6 +99,7 @@ async function removeMusicFromUserLikeList(userId, musicId) {
       likeMusics.splice(index, 1);
     }
     userInfo.likeMusics = likeMusics;
+    delete userInfo._id;
     await updateUserInfo(userId, userInfo);
     return true;
   } catch (e) {

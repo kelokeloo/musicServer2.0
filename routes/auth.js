@@ -48,6 +48,7 @@ router.post("/signUp", async function (req, res) {
     account,
     nickName,
     password,
+    likeMusics: [],
   };
   userId = await insertOneUser(document);
   const userInfo = await getUserInfo(userId, 1);
