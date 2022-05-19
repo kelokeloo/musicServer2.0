@@ -11,6 +11,7 @@ const authRouter = require("./routes/auth");
 const homeRouter = require("./routes/home");
 const musicRouter = require("./routes/music");
 const albumRouter = require("./routes/album");
+const searchRouter = require("./routes/search");
 
 var app = express();
 
@@ -30,6 +31,7 @@ app.use("/auth", authRouter);
 app.use("/home", homeRouter);
 app.use("/music", musicRouter);
 app.use("/album", albumRouter);
+app.use("/search", searchRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

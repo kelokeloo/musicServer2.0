@@ -4,6 +4,7 @@ const { Message } = require("./../util/dataStruct/index.js");
 const {
   addMusicCount,
   getMusicById,
+  getMusicsBySinger,
 } = require("./../Api/dataBase/Music/index.js");
 
 router.get("/addmusiccount", async function (req, res) {
@@ -29,6 +30,20 @@ router.get("/id", async function (req, res) {
         musicInfo: result,
       })
     );
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "获取失败"));
+  }
+});
+
+/**
+ * getMusicBySinger
+ */
+router.get("/singer", async function (req, res) {
+  const { singer } = req.query;
+  try {
+    const musics = await getMusicsBySinger(singer);
+    res.send(Message(0, "获取成功", musics));
   } catch (e) {
     console.log(e);
     res.send(Message(-1, "获取失败"));
