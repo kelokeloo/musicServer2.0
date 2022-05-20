@@ -8,4 +8,5 @@ module.exports = {
       "6281f387ab8004d9cba64617",
     ],
   },
+  webSocketPort: 8081,
 };

@@ -5,6 +5,7 @@ const {
   getUserLikeMusicList,
   addMusicToUserLikeList,
   removeMusicFromUserLikeList,
+  getUserInfo,
 } = require("./../Api/dataBase/User/index.js");
 
 /**
@@ -56,6 +57,17 @@ router.post("/removemusictolikes", async function (req, res) {
   } catch (e) {
     console.log(e);
     res.send(Message(-1, "设置失败"));
+  }
+});
+
+router.get("/userinfo", async function (req, res) {
+  const { userId } = req.query;
+  try {
+    const result = await getUserInfo(userId, 1);
+    res.send(Message(1, "请求成功", result));
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "获取失败"));
   }
 });
 

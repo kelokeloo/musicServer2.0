@@ -48,6 +48,7 @@ router.post("/signUp", async function (req, res) {
     account,
     nickName,
     password,
+    img: "/images/userImg/userDefaultImg.jfif",
     likeMusics: [],
   };
   userId = await insertOneUser(document);

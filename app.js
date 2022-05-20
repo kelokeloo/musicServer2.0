@@ -4,6 +4,8 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+require("./WebSocket/index");
+
 // 路由
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
@@ -12,6 +14,7 @@ const homeRouter = require("./routes/home");
 const musicRouter = require("./routes/music");
 const albumRouter = require("./routes/album");
 const searchRouter = require("./routes/search");
+const messageRouter = require("./routes/message");
 
 var app = express();
 
@@ -32,6 +35,7 @@ app.use("/home", homeRouter);
 app.use("/music", musicRouter);
 app.use("/album", albumRouter);
 app.use("/search", searchRouter);
+app.use("/message", messageRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
