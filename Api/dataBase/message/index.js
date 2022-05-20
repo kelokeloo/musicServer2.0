@@ -1,6 +1,8 @@
 const {
   findAllDocInCollection,
   insertDocToCollection,
+  findDocsInCollection,
+  UpdateDocInCollectionById,
 } = require("../baseManipulate/index");
 const collectionName = "message";
 /**
@@ -27,7 +29,32 @@ async function saveOneMessage(message) {
   }
 }
 
+/**
+ * 标记消息已读
+ */
+async function readMessage(from, to) {
+  try {
+    const filter = {
+      from,
+      to,
+    };
+    const messages = await findDocsInCollection(collectionName, filter);
+    return Promise.all(
+      messages.map((message) => {
+        const { _id } = message;
+        message.read = true;
+        delete message._id;
+        return UpdateDocInCollectionById(collectionName, _id, message);
+      })
+    );
+  } catch (e) {
+    console.log(e);
+    return null;
+  }
+}
+
 module.exports = {
   getAllMessages,
   saveOneMessage,
+  readMessage,
 };
