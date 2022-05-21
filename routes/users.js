@@ -6,6 +6,7 @@ const {
   addMusicToUserLikeList,
   removeMusicFromUserLikeList,
   getUserInfo,
+  searchUser,
 } = require("./../Api/dataBase/User/index.js");
 
 /**
@@ -64,6 +65,20 @@ router.get("/userinfo", async function (req, res) {
   const { userId } = req.query;
   try {
     const result = await getUserInfo(userId, 1);
+    res.send(Message(1, "请求成功", result));
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "获取失败"));
+  }
+});
+router.get("/searchuser", async function (req, res) {
+  const { value } = req.query;
+  try {
+    let result = await searchUser(value);
+    result = result.map((user) => {
+      delete user.password;
+      return user;
+    });
     res.send(Message(1, "请求成功", result));
   } catch (e) {
     console.log(e);

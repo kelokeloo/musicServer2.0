@@ -5,6 +5,7 @@ const {
   UpdateDocInCollectionById,
   findAllDocInCollection,
   insertDocToCollection,
+  findDocsInCollection,
 } = require("../baseManipulate/index");
 
 const collectionName = "user";
@@ -145,6 +146,25 @@ async function getUserIdByAccount(account) {
     }
   });
 }
+
+/**
+ * 根据用户nickName和account查找用户
+ */
+async function searchUser(value) {
+  console.log(value);
+  const filter = {
+    $or: [{ nickName: new RegExp(value) }, { account: new RegExp(value) }],
+  };
+  console.log(filter);
+  try {
+    const users = await findDocsInCollection(collectionName, filter);
+    return users;
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
+
 module.exports = {
   getUserInfo,
   updateUserInfo,
@@ -154,4 +174,5 @@ module.exports = {
   removeMusicFromUserLikeList,
   getUserLikeMusicList,
   getUserIdByAccount,
+  searchUser,
 };
