@@ -15,6 +15,7 @@ const musicRouter = require("./routes/music");
 const albumRouter = require("./routes/album");
 const searchRouter = require("./routes/search");
 const messageRouter = require("./routes/message");
+const memoryRouter = require("./routes/momery");
 
 var app = express();
 
@@ -36,6 +37,7 @@ app.use("/music", musicRouter);
 app.use("/album", albumRouter);
 app.use("/search", searchRouter);
 app.use("/message", messageRouter);
+app.use("/memory", memoryRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

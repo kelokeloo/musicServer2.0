@@ -151,7 +151,6 @@ async function getUserIdByAccount(account) {
  * 根据用户nickName和account查找用户
  */
 async function searchUser(value) {
-  console.log(value);
   const filter = {
     $or: [{ nickName: new RegExp(value) }, { account: new RegExp(value) }],
   };
@@ -165,6 +164,73 @@ async function searchUser(value) {
   }
 }
 
+async function getUserFocus(userId) {
+  try {
+    const userInfo = await getUserInfo(userId, 1);
+    const { focus } = userInfo;
+    return focus;
+  } catch (e) {
+    console.log(e);
+    return [];
+  }
+}
+
+/**关注  */
+async function addFocus(userId, focusId) {
+  console.log("add focus");
+  try {
+    const userInfo = await getUserInfo(userId, 1);
+    const { focus } = userInfo;
+    const index = focus.findIndex((id) => {
+      if (id === focusId) {
+        return true;
+      }
+      return false;
+    });
+    console.log(userInfo, focusId);
+
+    if (index === -1) {
+      focus.push(focusId);
+      userInfo.focus = focus;
+      delete userInfo._id;
+      await updateUserInfo(userId, userInfo);
+      return true;
+    } else {
+      return true;
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+/**
+ * 取消关注
+ */
+async function cancelFocus(userId, focusId) {
+  try {
+    const userInfo = await getUserInfo(userId, 1);
+    const { focus } = userInfo;
+    const index = focus.findIndex((id) => {
+      if (id === focusId) {
+        return true;
+      }
+      return false;
+    });
+    if (index === -1) {
+      return true;
+    } else {
+      focus.splice(index, 1);
+      userInfo.focus = focus;
+      delete userInfo._id;
+      await updateUserInfo(userId, userInfo);
+      return true;
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+}
+
 module.exports = {
   getUserInfo,
   updateUserInfo,
@@ -175,4 +241,7 @@ module.exports = {
   getUserLikeMusicList,
   getUserIdByAccount,
   searchUser,
+  getUserFocus,
+  addFocus,
+  cancelFocus,
 };

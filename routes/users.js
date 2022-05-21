@@ -7,6 +7,9 @@ const {
   removeMusicFromUserLikeList,
   getUserInfo,
   searchUser,
+  getUserFocus,
+  addFocus,
+  cancelFocus,
 } = require("./../Api/dataBase/User/index.js");
 
 /**
@@ -83,6 +86,46 @@ router.get("/searchuser", async function (req, res) {
   } catch (e) {
     console.log(e);
     res.send(Message(-1, "获取失败"));
+  }
+});
+router.get("/focus", async function (req, res) {
+  const { userId } = req.query;
+  try {
+    let result = await getUserFocus(userId);
+    res.send(Message(1, "请求成功", result));
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "获取失败"));
+  }
+});
+
+router.get("/addfocus", async function (req, res) {
+  const { userId, focusId } = req.query;
+  console.log(userId, focusId);
+  try {
+    let result = await addFocus(userId, focusId);
+    if (result) {
+      res.send(Message(1, "设置成功"));
+    } else {
+      res.send(Message(-1, "设置失败"));
+    }
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "设置失败"));
+  }
+});
+router.get("/cancelfocus", async function (req, res) {
+  const { userId, focusId } = req.query;
+  try {
+    let result = await cancelFocus(userId, focusId);
+    if (result) {
+      res.send(Message(1, "设置成功"));
+    } else {
+      res.send(Message(-1, "设置失败"));
+    }
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "设置失败"));
   }
 });
 
