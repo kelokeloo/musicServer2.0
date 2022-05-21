@@ -5,6 +5,7 @@ const {
   getMemoryLike,
   setMemoryLike,
   removeMemoryLike,
+  addComment,
 } = require("../Api/dataBase/memory");
 const { Message } = require("./../util/dataStruct/index.js");
 /* GET home page. */
@@ -55,4 +56,18 @@ router.get("/removeMemoryLike", async function (req, res) {
     res.send(Message(-1, "设置失败"));
   }
 });
+
+router.get("/addComment", async function (req, res) {
+  const { memoryId, content, from, to, time } = req.query;
+  const comment = { from, to, time, content };
+  console.log("comment", typeof comment, comment);
+  try {
+    const result = await addComment(memoryId, comment);
+    res.send(Message(1, "设置成功", result));
+  } catch (e) {
+    console.log(e);
+    res.send(Message(-1, "设置失败"));
+  }
+});
+
 module.exports = router;

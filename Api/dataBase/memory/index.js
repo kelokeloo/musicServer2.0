@@ -98,9 +98,29 @@ async function removeMemoryLike(memoryId, userId) {
   }
 }
 
+/**
+ * 添加评论
+ */
+async function addComment(memoryId, comment) {
+  console.log("comment", comment);
+  try {
+    const memory = await getMemory(memoryId);
+    let { comment: commentList } = memory;
+    commentList.push(comment);
+    memory.comment = commentList;
+    delete memory._id;
+    console.log("memory", memory);
+    await updateMemory(memoryId, memory);
+    return true;
+  } catch (e) {
+    return Promise.reject(e);
+  }
+}
+
 module.exports = {
   getAllMemorys,
   getMemoryLike,
   setMemoryLike,
   removeMemoryLike,
+  addComment,
 };
